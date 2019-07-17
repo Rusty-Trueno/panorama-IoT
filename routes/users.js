@@ -4,10 +4,10 @@ var http =require('http');
 var mysql = require('mysql');
 var url = require('url')
 var connection = mysql.createConnection({
-  host:'localhost',
+  host:'118.190.202.148',
   user:'root',
   port:3306,
-  password:'123456',
+  password:'Gantch815',
   database:'expressjs'
 });
 var img_url;

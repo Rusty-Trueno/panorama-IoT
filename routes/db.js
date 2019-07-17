@@ -1,9 +1,9 @@
 var mysql = require('mysql');
 var pool = mysql.createPool({
-    host:'localhost',
+    host:'118.190.202.148',
     user:'root',
     port:3306,
-    password:'123456',
+    password:'Gantch815',
     database:'expressjs'
 });
 function query(sql,callback){

@@ -27,69 +27,72 @@
 </head>
 <body>
 <style>
+    html {
+    font-size: 16px;
+    }
+
+    @media screen and (min-width: 375px) {
+        html {
+            /* iPhone6的375px尺寸作为16px基准，414px正好18px大小, 600 20px */
+            font-size: calc(100% + 2 * (100vw - 375px) / 39);
+            font-size: calc(16px + 2 * (100vw - 375px) / 39);
+        }
+    }
+    @media screen and (min-width: 414px) {
+        html {
+            /* 414px-1000px每100像素宽字体增加1px(18px-22px) */
+            font-size: calc(112.5% + 4 * (100vw - 414px) / 586);
+            font-size: calc(18px + 4 * (100vw - 414px) / 586);
+        }
+    }
+    @media screen and (min-width: 600px) {
+        html {
+            /* 600px-1000px每100像素宽字体增加1px(20px-24px) */
+            font-size: calc(125% + 4 * (100vw - 600px) / 400);
+            font-size: calc(20px + 4 * (100vw - 600px) / 400);
+        }
+    }
+    @media screen and (min-width: 1000px) {
+        html {
+            /* 1000px往后是每100像素0.5px增加 */
+            font-size: calc(137.5% + 6 * (100vw - 1000px) / 1000);
+            font-size: calc(22px + 6 * (100vw - 1000px) / 1000);
+        }
+    }
+
     body {
         margin:0;
         padding:0;
-
     }
     #heading{
         width:100%;
-        height:50px;
-        background-color: #bce8f1;
+        height:2vmin;
+        position: absolute;
+        color:#FFFFFF;
+        z-index: 20;
     }
     #content_menu{
-        width:20%;
-        height:100%;
+        width:10vw;
+        height:5vh;
         background-color: transparent;
         float:left;
+        position: absolute;
+        z-index: 20;
     }
     #content_body{
-        width:80%;
-        height:100%;
-        float: right;
+        width: 100vw;
+        height: 50vmax;
+        position:absolute;
+        z-index: 10;
     }
-    /*#viewer {
-        position:relative;
-        width:100%;
-        height:100%;
-        z-index:50;
-
-    }*/
-    /*#logout{
-        position:fixed;
-        top:-50px;
-
-        z-index:100;
-    }*/
     #webGL{
         position:fixed;
         width:100vh;
         height:100vh;
         z-index: 80;
     }
-    .leftH2 {
-        width: 140px;
-        height: 30px;
-        border-radius: 4px;
-        line-height: 30px;
-        text-align: center;
-        color: #fff;
-        background: #60b3e7;
-        margin: 5px auto;
-        font-size:30px;
-        font-family: inherit;
-        font-weight: 500;
-        display: block;
-        margin-block-start: 0.83em;
-        margin-block-end: 0.83em;
-        margin-inline-start: 0px;
-        margin-inline-end: 0px;
-        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-        box-sizing: border-box;
-        box-shadow: 4px 4px rgba(212,212,212,0.7);
-    }
     .list {
-        margin: 0 12px;
+        /* margin: 0 12px; */
         font-weight: bold;
         list-style: none;
     }
@@ -103,8 +106,8 @@
         opacity: .3;
     }
     .anjian {
-        width:100%;
-        height:30px;
+        width:10vmax;
+        height:5vh;
         line-height:24px;
         border: 1px solid #7ba92c;
         color:#FFFFFF;
@@ -113,14 +116,18 @@
         cursor: pointer;
         left: 0;
         list-style: none;
+        /* float: left; */
+        font-size: 2vmin;
         /*padding-left:24px;*/
     }
     #myModal{
-        position:fixed;
+        position: absolute;;
         left:0;
         right:0;
         top:0;
         bottom:0;
+        width:100vmin;
+        height: 100vmin;
         z-index:99999;
     }
 
@@ -230,29 +237,26 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<div id="webGL" style="display: none"></div>
-<!--div class="container"-->
-<div id="heading">
-    <em>欢迎来到实景展示界面</em>
+<div id=mapDiv>
+    <div id="webGL" style="display: none"></div>
+    <!--div class="container"-->
+    <div id="heading">
+        <em>欢迎来到实景展示界面</em>
+    </div>
+    <div id="content_body">
+        <div id="viewer"></div>
+    </div>
+    <div id="content_menu">
+            <ul class="list">
+                <li><input id="logout" type="button" data-toggle="modal" value="退出" class="anjian" onclick="home()"/></li>
+                <li><input id="addDevice" type="button" data-toggle="modal" value="添加设备" class="anjian" onclick="addDevice()"/></li>
+                <li><input id="deleteDevice" type="button" data-toggle="modal" value="删除设备" class="anjian" onclick="deleteDevice()"/></li>
+                <li><input id="addForward" type="button" data-toggle="modal" value="添加前进按钮" class="anjian" onclick="addForward()"/></li>
+                <li><input id="addBack" type="button" data-toggle="modal" value="添加后退按钮" class="anjian" onclick="addBack()"/></li>
+            </ul>
+    </div>
 </div>
-<div id="content_body">
-    <div id="viewer"></div>
-</div>
-<div id="content_menu">
-    <h1 class="leftH2">
-        <span>功能列表</span>
-    </h1>
-    <nav>
-        <ul class="list">
-            <li><input id="logout" type="button" data-toggle="modal" value="退出" class="anjian" onclick="home()"/></li>
-            <li><input id="addDevice" type="button" data-toggle="modal" value="添加设备" class="anjian" onclick="addDevice()"/></li>
-            <li><input id="deleteDevice" type="button" data-toggle="modal" value="删除设备" class="anjian" onclick="deleteDevice()"/></li>
-            <li><input id="addForward" type="button" data-toggle="modal" value="添加前进按钮" class="anjian" onclick="addForward()"/></li>
-            <li><input id="addBack" type="button" data-toggle="modal" value="添加后退按钮" class="anjian" onclick="addBack()"/></li>
-        </ul>
-    </nav>
 
-</div>
 
 <!--/div-->
 <script type="text/template" id="logoutin">
@@ -632,6 +636,7 @@
         caption:'物联网智能家居',
         touchmove_two_fingers:true,
         default_fov:179,
+        move_speed:2,
         lang:{
             autorotate: 'Automatic rotation',
             zoom: 'Zoom',
@@ -740,8 +745,8 @@
                             id:data[i].markerId,
                             longitude:data[i].longitude,
                             latitude:data[i].latitude,
-                            width:35,
-                            height:35,
+                            width:50,
+                            height:50,
                             image:'/images/arrow.gif',
                             tooltip:{
                                 content:'前往此处',
@@ -795,8 +800,8 @@
                                             id:data[i].markerId,
                                             longitude:data[i].longitude,
                                             latitude:data[i].latitude,
-                                            width:35,
-                                            height:35,
+                                            width:50,
+                                            height:50,
                                             image:'/images/arrow.gif',
                                             tooltip:{
                                                 content:'前往此处',
